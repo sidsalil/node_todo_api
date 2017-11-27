@@ -10,13 +10,16 @@ var app = express();
 app.use(bodyParser.json());
 
 app.post('/todos', (request, response) => {
+  // console.log('server.js request.body', request.body);
   var todo = new ToDo({
     text: request.body.text
   });
-  console.log('todo object to be saved from server.js = ', todo, 'request.body.text = ', request.body.text);
+  console.log('todo object to be saved from server.js = ', todo);
   todo.save().then((result) => {
+    // console.log('request.body.text = ', request.body.text, 'result = ', result);
     response.send(result);
   }, (error) => {
+    // console.log(error);
     response.status(400).send(error);
   });
 });
