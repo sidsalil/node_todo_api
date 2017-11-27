@@ -10,10 +10,10 @@ var app = express();
 app.use(bodyParser.json());
 
 app.post('/todos', (request, response) => {
-  console.log(request.body);
   var todo = new ToDo({
     text: request.body.text
   });
+  console.log('todo object to be saved from server.js = ', todo, 'request.body.text = ', request.body.text);
   todo.save().then((result) => {
     response.send(result);
   }, (error) => {
@@ -26,11 +26,11 @@ app.get('/todos', (request, response) => {
     response.send({todos});
   }, (error) => {
     response.status(400).send(error);
-  })
-})
+  });
+});
 
 app.listen(3000, () => {
-  console.log('Started on port 3000');
+  console.log('server.js Started on port 3000');
 });
 
 module.exports = {app}
