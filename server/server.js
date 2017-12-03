@@ -14,7 +14,7 @@ app.post('/todos', (request, response) => {
   var todo = new ToDo({
     text: request.body.text
   });
-  console.log('todo object to be saved from server.js = ', todo);
+  // console.log('todo object to be saved from server.js = ', todo);
   todo.save().then((result) => {
     // console.log('request.body.text = ', request.body.text, 'result = ', result);
     response.send(result);
