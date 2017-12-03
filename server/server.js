@@ -48,6 +48,21 @@ app.get('/todos/:toDoIdToFind', (request, response) => {
   });
 });
 
+app.delete('/todos/:toDoIdToDelete', (request, response) => {
+  var toDoIdToDelete = request.params.toDoIdToDelete;
+  if (!ObjectID.isValid(toDoIdToDelete)) {
+    return response.status(404).send('ToDo ID is not valid');
+  }
+  ToDo.findByIdAndRemove(toDoIdToDelete).then((todo) => {
+    if (!todo) {
+      return response.status(404).send('ToDo not found');
+    }
+    response.status(200).send({todo});
+  }).catch((error) => {
+    response.status(400).send(error);
+  });
+});
+
 app.listen(3000, () => {
   console.log('server.js Started on port 3000');
 });
