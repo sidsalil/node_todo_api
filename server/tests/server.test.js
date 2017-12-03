@@ -91,4 +91,31 @@ describe('Get /todos/:toDoIdToFind', () => {
     request(app).get('/todos/1234abcd').expect(404).end(done);
   });
 
-})
+});
+
+describe('DELETE /todos/:toDoIdToDelete', () => {
+  it('Should remove a ToDo based on ObjectID', (done) => {
+    var dummyId = testToDos[0]._id.toHexString();
+    request(app).delete(`/todos/${dummyId}`).expect(200).expect((response) => {
+      expect(response.body.todo._id).toBe(dummyId);
+    })
+    .end((error, response) => {
+      if (error) {
+        return done(error);
+      }
+      ToDo.findById(dummyId).then((todo) => {
+        expect(todo).toNotExist();
+        done();
+      }).catch((error) => done(error));
+    })
+  });
+
+  it('Should return 404 if ToDo not found', (done) => {
+    request(app).delete('/todos/1234abcd').expect(404).end(done);
+  });
+
+  it('Should return 404 if ToDo ObjectID is invalid', (done) => {
+    request(app).delete('/todos/XXX').expect(404).end(done);
+  });
+  
+});
