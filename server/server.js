@@ -66,7 +66,10 @@ app.post('/users', (request, response) => {
   var user = new User(body);
   console.log(user);
   user.save().then((user) => {
-    response.send(user);
+    // response.send(user);
+    return user.generateAuthToken();
+  }).then((token) => {
+      response.header('x-auth', token).send(user);
   }).catch((error) => {
     response.status(400).send(error);
   });
